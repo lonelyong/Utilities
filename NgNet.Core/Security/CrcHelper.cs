@@ -12,13 +12,13 @@ namespace NgNet.Security
     public static class CrcHelper
     {
         #region private static fileds
-        private static ulong[] crc32Table;
+        private readonly static ulong[] _crc32Table;
         #endregion
 
         #region constructor
         static CrcHelper()
         {
-            crc32Table = GetCRC32Table();
+            _crc32Table = GetCRC32Table();
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace NgNet.Security
             ulong crc = 0xFFFFFFFF;
             for (int i = 0; i < iCount; i++)
             {
-                crc = ((crc >> 8) & 0x00FFFFFF) ^ crc32Table[(crc ^ bytes[i]) & 0xFF];
+                crc = ((crc >> 8) & 0x00FFFFFF) ^ _crc32Table[(crc ^ bytes[i]) & 0xFF];
             }
             return crc ^ 0xFFFFFFFF; ;
         }
@@ -72,7 +72,7 @@ namespace NgNet.Security
         public static ulong GetCRC32Str(string sInputString)
         {
             //生成码表
-            byte[] buffer = System.Text.ASCIIEncoding.ASCII.GetBytes(sInputString);
+            byte[] buffer = Encoding.ASCII.GetBytes(sInputString);
             return GetCRC32(buffer);
         }
 

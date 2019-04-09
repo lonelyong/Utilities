@@ -13,7 +13,7 @@ namespace NgNet.Security
         /// <summary>
         /// 密钥加密算法，默认为SHA1
         /// </summary>
-        private HashAlgorithm KeyHash;
+        private HashAlgorithm hash;
 
         private List<int> supportedKeySize;
 
@@ -28,7 +28,7 @@ namespace NgNet.Security
         /// </summary>
         public Encoding encoding
         {
-            set { _encoding = value == null ? Encoding.Default : value; }
+            set { _encoding = value ?? Encoding.Default; }
             get { return _encoding; }
         }
         /// <summary>
@@ -39,19 +39,10 @@ namespace NgNet.Security
             set
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new Exception("密钥不能为空");
-                byte[] keyHash = KeyHash.ComputeHash(encoding.GetBytes(value));
-                byte[] tmp = new byte[8];
-                for (int i = 0; i < 8; i++)
-                {
-                    tmp[i] = keyHash[i];
-                }
-                this.Key = tmp;
-                for (int i = 8; i < 16; i++)
-                {
-                    tmp[i - 8] = keyHash[i];
-                }
-                this.IV = tmp;
+                    throw new ArgumentNullException("密钥不能为空");
+                var bytHash = hash.ComputeHash(encoding.GetBytes(value));
+                Key = bytHash.Take(8).ToArray();
+                IV = bytHash.Skip(8).Take(8).ToArray();
             }
         }
         /// <summary>
@@ -65,7 +56,7 @@ namespace NgNet.Security
                     throw new Exception("密钥长度不对");
                 this.des.Key = value;
             }
-            get { return this.Key; }
+            get { return Key; }
         }
         /// <summary>
         /// 设置对称加密算法的初始化向量
@@ -138,16 +129,16 @@ namespace NgNet.Security
         public DesHelper(string key, DES des)
         {
             if (des == null)
-                throw new Exception("des不能为null");
+                throw new ArgumentNullException(nameof(des));
             else
                 this.des = des;
             if (string.IsNullOrEmpty(key))
-                throw new Exception("密钥不能为空");
+                throw new ArgumentNullException(nameof(key));
             //获取支持的密钥长度
-            this.supportedKeySize = new List<int>(SupportedKeySize);
+            supportedKeySize = new List<int>(SupportedKeySize);
             // 初始化默认的key的加密方式
-            this.KeyHash = SHA1.Create();
-            this.StringKey = key;
+            hash = SHA1.Create();
+            StringKey = key;
         }
 
         #endregion
@@ -265,11 +256,7 @@ namespace NgNet.Security
         /// <returns>输出加密后字符串</returns>
         public static string EncryptString(string inputStr, string keyStr)
         {
-            if (string.IsNullOrEmpty(keyStr))
-                throw new Exception("加密密钥不能为空");
-
-            DesHelper des = new DesHelper(keyStr, DESCryptoServiceProvider.Create());
-
+            var des = new DesHelper(keyStr, DES.Create());
             return des.EncryptString(inputStr);
         }
 
@@ -281,11 +268,7 @@ namespace NgNet.Security
         /// <returns>解密后的结果</returns>
         static public string SDecryptString(string inputStr, string keyStr)
         {
-            if (string.IsNullOrEmpty(keyStr))
-                throw new Exception("加密密钥不能为空");
-
-            DesHelper des = new DesHelper(keyStr, DESCryptoServiceProvider.Create());
-
+            var des = new DesHelper(keyStr, DES.Create());
             return des.DecryptString(inputStr);
         }
         #endregion
@@ -300,11 +283,7 @@ namespace NgNet.Security
         /// <returns></returns>  
         public static bool EncryptFile(string filePath, string savePath, string keyStr)
         {
-            if (string.IsNullOrEmpty(keyStr))
-                throw new Exception("加密密钥不能为空");
-
-            DesHelper des = new DesHelper(keyStr, DESCryptoServiceProvider.Create());
-
+            var des = new DesHelper(keyStr, DES.Create());
             return des.EncryptFile(filePath, savePath);
         }
 
@@ -317,11 +296,7 @@ namespace NgNet.Security
         /// <returns></returns>    
         public static bool DecryptFile(string filePath, string savePath, string keyStr)
         {
-            if (string.IsNullOrEmpty(keyStr))
-                throw new Exception("加密密钥不能为空");
-
-            DesHelper des = new DesHelper(keyStr, DESCryptoServiceProvider.Create());
-
+			var des = new DesHelper(keyStr, DES.Create());
             return des.DecryptFile(filePath, savePath);
         }
         #endregion}

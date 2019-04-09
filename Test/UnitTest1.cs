@@ -12,5 +12,13 @@ namespace Test
                QueryString = new Dictionary<string, string>() { { "SLINK", "1" } }
            }, false);
         }
+
+		[Fact]
+		public void TestRsa()
+		{
+			var res = new NgNet.Security.RsaHelper(1024);
+			var xmlKey = res.ToXmlString(true);
+			Assert.StartsWith("", xmlKey);
+		}
     }
 }
