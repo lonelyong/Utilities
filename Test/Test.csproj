@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NgNet.Core\NgNet.Core.csproj" />
+    <ProjectReference Include="..\NgNet.Core\NgNet.Core1.csproj" />
   </ItemGroup>
 
 </Project>

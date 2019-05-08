@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NgNet.Core", "NgNet.Core\NgNet.Core.csproj", "{040A391C-C2E0-45B0-9EB9-0F5730669F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NgNet.Core1", "NgNet.Core1\NgNet.Core1.csproj", "{040A391C-C2E0-45B0-9EB9-0F5730669F03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{8D313770-C8FC-48EB-A84D-90D95120C5AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgNet.Windows", "NgNet.Windows\NgNet.Windows.csproj", "{2D97F6A5-8953-4D66-896A-E73385680912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NgNet.Windows", "NgNet.Windows\NgNet.Windows.csproj", "{2D97F6A5-8953-4D66-896A-E73385680912}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NgNet.Util", "NgNet.Util\NgNet.Util.csproj", "{1F7FFFCC-3164-4453-8A92-6FED3D4BE146}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgNet.Core", "NgNet.Core\NgNet.Core.csproj", "{D55B3F20-3459-4E7B-94B3-6DDB10E14C26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{2D97F6A5-8953-4D66-896A-E73385680912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D97F6A5-8953-4D66-896A-E73385680912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D97F6A5-8953-4D66-896A-E73385680912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F7FFFCC-3164-4453-8A92-6FED3D4BE146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7FFFCC-3164-4453-8A92-6FED3D4BE146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F7FFFCC-3164-4453-8A92-6FED3D4BE146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F7FFFCC-3164-4453-8A92-6FED3D4BE146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55B3F20-3459-4E7B-94B3-6DDB10E14C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55B3F20-3459-4E7B-94B3-6DDB10E14C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55B3F20-3459-4E7B-94B3-6DDB10E14C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55B3F20-3459-4E7B-94B3-6DDB10E14C26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
