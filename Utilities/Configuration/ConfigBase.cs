@@ -5,10 +5,11 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using Utilities.IO;
+using System.ComponentModel;
 
 namespace Utilities.Configuration
 {
-	public abstract class ConfigBase : ICloneable
+	public abstract class ConfigBase : ICloneable, INotifyPropertyChanged
 	{
 		#region fields & properties
 		private ConfigBase _oldConfig;
@@ -21,37 +22,41 @@ namespace Utilities.Configuration
 		#endregion
 
 		#region events
-		public event ConfigChangedEventHandler ConfigChanged;
-		#endregion
+		public event EventHandler ConfigChanged;
 
-		#region methods
-		public ConfigBase()
-		{
-			ConfigAttribute = this.GetType().GetCustomAttribute(typeof(ConfigAttribute), false) as ConfigAttribute;
-			if(ConfigAttribute == null)
-			{
-				throw new Exception($"配置类必须具有{ConfigAttribute}特性");
-			}
-		}
-		
-		protected void BeforeUpdatingConfigField() {
-			if (!InUpdating) {
-				_oldConfig = (ConfigBase)Clone();
-			}
-		}
+        public event PropertyChangingEventHandler PropertyChanging;
 
-		protected void AfterUpdatingConfigField() {
-			if (!InUpdating) {
-				OnConfigChanged(new ConfigChangedEventArgs(this, _oldConfig));
-			}
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        #region constructor
+        public ConfigBase()
+        {
+            ConfigAttribute = this.GetType().GetCustomAttribute(typeof(ConfigAttribute), false) as ConfigAttribute;
+            if (ConfigAttribute == null)
+            {
+                throw new Exception($"配置类必须具有{nameof(ConfigAttribute)}特性");
+            }
+        }
+        #endregion
+
+        #region methods
+        protected void OnPropertyChanging(PropertyChangingEventArgs e) {
+            PropertyChanging?.Invoke(this, e);
 		}
 
-		protected virtual void OnConfigChanged(ConfigChangedEventArgs e) {
-			ConfigChanged?.Invoke(this, e);
-		}
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, e);
+        }
 
-		protected virtual bool IsConfigFieldChanged(object newField, object oldField) {
-			return newField == oldField;
+        protected virtual void OnConfigChanged(EventArgs e)
+        {
+            ConfigChanged?.Invoke(this, e);
+        }
+
+		protected virtual bool IsValueChanged(object newValue, object oldValue) {
+			return newValue == oldValue;
 		}
 
 		public abstract object Clone();
@@ -70,7 +75,7 @@ namespace Utilities.Configuration
 				return;
 			}
 			InUpdating = false;
-			OnConfigChanged(new ConfigChangedEventArgs(this, _oldConfig));
+            OnConfigChanged(new EventArgs());
 		}
 
 		public string ToJson()
