@@ -52,10 +52,9 @@ namespace Utilities
         /// <returns></returns>
         public static string ToChineseFigures<T>(T num) where T : struct
         {
-            if(!typeof(T).IsNumericType() || !typeof(T).IsNullableNumericType())
-            {
-                throw new Exception("T必须是数值类型");
-            }
+            Priv.PrivExceptionUtils.ThrowIfGenericParamIsInvalid<T>((t) => {
+                return typeof(T).IsNumericType() || !typeof(T).IsNullableNumericType();
+            });
             return string.Empty;
         }
 
@@ -67,10 +66,9 @@ namespace Utilities
         /// <returns></returns>
         public static string ToUpperChineseFigures<T>(T num)
         {
-            if (!typeof(T).IsNumericType() || !typeof(T).IsNullableNumericType())
-            {
-                throw new Exception("T必须是数值类型");
-            }
+            Priv.PrivExceptionUtils.ThrowIfGenericParamIsInvalid<T>((t) => {
+                return typeof(T).IsNumericType() || !typeof(T).IsNullableNumericType();
+            });
             return string.Empty;
         }
 
@@ -85,6 +83,7 @@ namespace Utilities
             bool.TryParse(objBool?.ToString(), out def);
             return def;
         }
+
         /// <summary>
         /// 将具有DateTime值的对象转为DateTime
         /// </summary>
@@ -125,7 +124,5 @@ namespace Utilities
         {
             return ToTimestamp(DateTime.Now);
         }
-
-
     }
 }
