@@ -119,6 +119,16 @@ namespace Utilities
             }
             return dt;
         }
+
+        /// <summary>
+        /// 获取指定枚举项的名称
+        /// </summary>
+        /// <param name="enum"></param>
+        /// <returns></returns>
+        public static string GetName(this Enum @enum)
+        {
+            return Enum.GetName(@enum.GetType(), @enum);
+        }
         #endregion
     }
 }

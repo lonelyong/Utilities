@@ -20,6 +20,9 @@
     <PackageId>Ng.DotNet.Utilities</PackageId>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>G:\projects\Utilities\Utilities\Utilities.xml</DocumentationFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

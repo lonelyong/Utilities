@@ -63,5 +63,30 @@ namespace Utilities.Collections
 			return list;
 		}
 
+        public static IEnumerable<T> Even<T>(this IEnumerable<T> collection)
+        {
+            var isEven = false;
+            foreach (var item in collection)
+            {
+                if (isEven)
+                {
+                    yield return item;
+                }
+                isEven = !isEven;
+            }
+        }
+
+        public static IEnumerable<T> Odd<T>(this IEnumerable<T> collection)
+        {
+            var isOdd = true;
+            foreach (var item in collection)
+            {
+                if (isOdd)
+                {
+                    yield return item;
+                }
+                isOdd = !isOdd;
+            }
+        }
 	}
 }

@@ -21,6 +21,10 @@ namespace Utilities.Security
 					return SHA384.Create();
 				case nameof(SHA512):
 					return SHA512.Create();
+                case nameof(HMACSHA1):
+                case nameof(HMACSHA256):
+                case nameof(HMACSHA512):
+                    return HMAC.Create(algorithm);
 				default:
 					throw new NotSupportedException();
 			}
@@ -40,7 +44,23 @@ namespace Utilities.Security
 			}
 		}
 
-		private static string GetFileHashByAlgorithm(string path, string algorithm)
+        private static string GetTextHmacHashByAlgorithm(string text, string algorithm, string key)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+            var alg = GetHashAlgorithm(algorithm) as HMAC;
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+            alg.Key = keyBytes;
+            using (alg)
+            {
+                var bytValue = System.Text.Encoding.UTF8.GetBytes(text);
+                var bytHash = alg.ComputeHash(bytValue);
+                alg.Clear();
+                //根据计算得到的HASH码翻译为SHA-1码
+                return Bytes2String(bytHash);
+            }
+        }
+
+        private static string GetFileHashByAlgorithm(string path, string algorithm)
 		{
 			if (!System.IO.File.Exists(path))
 				throw new FileNotFoundException();
@@ -102,6 +122,7 @@ namespace Utilities.Security
 			return sb.ToString();
 			#endregion
 		}
+
 		#region Text
 		#region MD5
 		/// <summary>
@@ -152,9 +173,37 @@ namespace Utilities.Security
         public static string StringSHA512(string text)
         {
 			return GetTextHashByAlgorithm(text, nameof(SHA512));
-		}
-
-
+        }        
+        /// <summary>
+        /// 获取文本HMACSHA1
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string StringHmacSHA1(string text, string key)
+        {
+            return GetTextHmacHashByAlgorithm(text, nameof(HMACSHA1), key);
+        }
+        /// <summary>
+        /// 获取文本HMACSHA256
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string StringHmacSHA256(string text, string key)
+        {
+            return GetTextHmacHashByAlgorithm(text, nameof(HMACSHA256), key);
+        }
+        /// <summary>
+        /// 获取文本HMACSHA512
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string StringHmacSHA512(string text, string key)
+        {
+            return GetTextHmacHashByAlgorithm(text, nameof(HMACSHA512), key);
+        }
         #endregion
         #endregion
 

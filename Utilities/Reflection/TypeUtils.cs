@@ -66,7 +66,7 @@ namespace Utilities.Reflection
 
         public static bool IsNullableNumericType(this Type type)
         {
-            return type != null && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments().First().IsNumericType();
+            return type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments().First().IsNumericType();
         }
 
         public static bool IsBaseValueType(this Type type)
@@ -76,7 +76,7 @@ namespace Utilities.Reflection
 
         public static bool IsNullableBaseValueType(this Type type)
         {
-            return type != null && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments().First().IsBaseValueType();
+            return type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments().First().IsBaseValueType();
         }
 
         public static Type FindClosestAncestor(this Type type, IEnumerable<Type> types)
